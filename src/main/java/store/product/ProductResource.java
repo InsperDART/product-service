@@ -28,9 +28,11 @@ public class ProductResource implements ProductController {
 
         Product product = productService.getUmProduct(id);
 
-        return product == null
-            ? ResponseEntity.notFound().build()
-            : ResponseEntity.ok(ProductParser.to(product));
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ProductParser.to(product));
     }
 
     @Override
@@ -46,7 +48,7 @@ public class ProductResource implements ProductController {
             .buildAndExpand(product.id())
             .toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(ProductParser.to(product));
     }
 
     @Override
