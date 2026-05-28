@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import jakarta.validation.Valid;
 
 @RestController
 public class ProductResource implements ProductController {
@@ -36,7 +37,7 @@ public class ProductResource implements ProductController {
     }
 
     @Override
-    public ResponseEntity<ProductOut> create(ProductIn in) {
+    public ResponseEntity<ProductOut> create(@Valid ProductIn in) {
 
         final Product product = productService.registrarProduct(
             ProductParser.to(in)
@@ -53,6 +54,12 @@ public class ProductResource implements ProductController {
 
     @Override
     public ResponseEntity<Void> delete(String id) {
+
+        Product product = productService.getUmProduct(id);
+
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         productService.deletarProduct(id);
 
