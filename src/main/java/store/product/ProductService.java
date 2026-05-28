@@ -31,7 +31,7 @@ public class ProductService {
     }
 
     public Product registrarProduct(Product product) {
-        if (product.name() == "" || product.name() == null || product.price() < 0 || product.price() == null || product.unit() == null) {
+        if (product.name() == "" || product.name() == null || product.price() == null || product.price() < 0 || product.unit() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return productRepository.save(
